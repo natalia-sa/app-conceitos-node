@@ -17,8 +17,9 @@ app.get("/repositories", (request, response) => {
 app.post("/repositories", (request, response) => {
   const {title, url, techs} = request.body
 
-  repositories.push({id: uuid(), title:title, url:url,techs:techs, likes:0})
-  return response.json({message : "cadastrado com sucesso"})
+  const repository = {id: uuid(), title:title, url:url,techs:techs, likes:0}
+  repositories.push(repository)
+  return response.json(repository)
 });
 
 app.put("/repositories/:id", (request, response) => {
@@ -50,7 +51,7 @@ app.delete("/repositories/:id", (request, response) => {
 
   } else {
     repositories.splice(repositorieIndex, 1);
-    return response.status(204).json('')
+    return response.status(204).json('No Content')
   }
 });
 
@@ -59,7 +60,7 @@ app.post("/repositories/:id/like", (request, response) => {
 
   const repositorie = repositories.find(repositorie => repositorie.id == id);
   if(!repositorie) {
-    return response.status(400).json({error: "repositorio nao encontrado"})
+    return response.status(400).json({error: "repositório não encontrado"})
   } else {
     repositorie.likes += 1;
     return response.json(repositorie);
